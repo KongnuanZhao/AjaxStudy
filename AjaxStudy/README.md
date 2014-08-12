@@ -1,0 +1,72 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <script type="text/javascript">
+      //创建Ajax引擎 1号线
+      function getXmlHttpObject(){
+    	  //不同浏览器获取对象方法不一样
+    	  if(window.ActiveXobject){
+    		  xmlHttpRequest =new ActiveXObject("Microsoft.XMLHTTP");
+    	  }else{
+    		  xmlHttpRequest =new XMLHttpRequest();
+    	  }
+    	  return xmlHttpRequest;
+      }
+      var myXmlHttpRequest = "";
+      //验证用户名是否存在
+      function checkName(){
+    	  myXmlHttpRequest=getXmlHttpObject()
+    	  if(myXmlHttpRequest){
+    		  //通过myXmlHttpRequest对象发送请求道服务器的某个页面
+    		  //true 表示使用异步机制
+    		 // var url="register.jsp?username="+$("username").value;	//get 	
+    		  var url="register.jsp";
+    		  var data="username="+$("username").value;   //post
+    		  myXmlHttpRequest.open("post", url,true);
+    		  //这句话必须
+    		  myXmlHttpRequest.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    		  //指定回调函数 4号线
+    		  myXmlHttpRequest.onreadystatechange=chuli;
+    		  //发送请求,如果是get请求则填入null即可 2号线
+    		 // myXmlHttpRequest.send(null);
+    		  //如果是post请求，则填入实际的数据
+    		  myXmlHttpRequest.send(data);
+    	  }else{
+    		  window.alert("不ok");
+    	  }
+      }
+      function $(id){
+    	  return document.getElementById(id);	  
+      }
+      //回调函数
+      function chuli() {
+    	//  window.alert("chuli 函数被调用"+myXmlHttpRequest.readyState);	
+      //取回从register.jsp页面返回的数据
+      if(myXmlHttpRequest.readyState==4){
+    	 // window.alert("服务器返回  :"+myXmlHttpRequest.responseText)
+    	 $('myres').value=myXmlHttpRequest.responseText;
+      }
+      }
+      
+    </script>
+    </head>
+    <body>
+      <form action="register.jsp">
+      <input type="text" name="username1" id ="username" onkeyup="checkName()"/>
+      <input type="button" value="验证用户名" onclick="checkName() "/>
+      <input type="text" style="border-width:0px;color:red;" id="myres">
+      <br>
+      <input type="text" name="password1" id="password1"><br>
+      <input type="submit" value="用户注册">
+      </form>
+      <br>
+      <form action="register.jsp">
+      <input type="text" name="username2" id ="username2" />
+      <input type="button" value="提交用户名"/><br>
+      <input type="text" name="password2" id="password2"><br>
+      <input type="submit" value="用户注册">
+      </form>
+    </body>
+    </html>

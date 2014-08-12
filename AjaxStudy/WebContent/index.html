@@ -21,13 +21,18 @@
 	  if(myXmlHttpRequest){
 		  //通过myXmlHttpRequest对象发送请求道服务器的某个页面
 		  //true 表示使用异步机制
-		  var url="register.jsp?username="+$("username").value;
-		
-		  myXmlHttpRequest.open("get", url,true);
+		 // var url="register.jsp?username="+$("username").value;	//get 	
+		  var url="register.jsp";
+		  var data="username="+$("username").value;   //post
+		  myXmlHttpRequest.open("post", url,true);
+		  //这句话必须
+		  myXmlHttpRequest.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //指定回调函数 4号线
 		  myXmlHttpRequest.onreadystatechange=chuli;
-		  //真的发送请求,如果是get请求则填入null即可 2号线
-		  myXmlHttpRequest.send(null);
+		  //发送请求,如果是get请求则填入null即可 2号线
+		 // myXmlHttpRequest.send(null);
+		  //如果是post请求，则填入实际的数据
+		  myXmlHttpRequest.send(data);
 	  }else{
 		  window.alert("不ok");
 	  }
@@ -41,7 +46,13 @@
       //取回从register.jsp页面返回的数据
       if(myXmlHttpRequest.readyState==4){
     	 // window.alert("服务器返回  :"+myXmlHttpRequest.responseText)
-    	 $('myres').value=myXmlHttpRequest.responseText;
+    	// $('myres').value=myXmlHttpRequest.responseText;
+    	 //获取mes节点
+    	 var mes=myXmlHttpRequest.responseXML.getElementsByTagName("mes");
+    	 //取出mes节点的值
+    	 var mes_val=mes[0].childNodes[0].nodeValue;
+    	 $('myres').value=mes_val;
+    	 
       }
   }
   
